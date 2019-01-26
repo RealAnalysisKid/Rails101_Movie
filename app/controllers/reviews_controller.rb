@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :edit, :update, :create, :destroy]
+  before_action :authenticate_user!
   before_action :find_review_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
@@ -16,9 +16,11 @@ class ReviewsController < ApplicationController
     @review.user = current_user
     @review.movie = @movie
 
-    if @review.save
-      redirect_to movie_path(@movie)
+    if current_user.is_favorite_of?(@movie)
+        @review.save
+        redirect_to movie_path(@movie)
     else
+      flash[:alert] = "收藏电影才能点评哦"
       render :new
     end
   end
