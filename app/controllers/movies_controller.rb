@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :authenticate_user!, only:[:new, :create]
+  before_action :authenticate_user!, only:[:new, :create, :edit, :update]
 
   def index
     @movies = Movie.all
@@ -11,6 +11,9 @@ class MoviesController < ApplicationController
 
   def edit
     @movie = Movie.find(params[:id])
+    if current_user != @movie.user
+      redirect_to root_path, alert: "You Have No Permission"
+    end
   end
 
   def show
