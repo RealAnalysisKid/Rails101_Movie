@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
-    @reviews = @movie.reviews.order("created_at DESC")
+    @reviews = @movie.reviews.recent
   end
 
   def create
