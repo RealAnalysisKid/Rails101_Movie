@@ -4,7 +4,7 @@
     <span class="pull-right">
       <% if !current_user.is_favorite_of?(@movie) %>
         <label class="label label-warning"> 未收藏 </label>
-        <%= link_to("Favorite", add_movie_path(@movie), method: :post, class:"btn btn-default") %>
+        <%= link_to("Add Favorite", add_movie_path(@movie), method: :post, class:"btn btn-default") %>
       <% else %>
         <label class="label label-success"> 收藏 </label>
         <%= link_to("Remove Favorite", remove_movie_path(@movie), method: :post, class:"btn btn-default") %>
@@ -34,6 +34,14 @@
         <td><%= review.content %></td>
         <td><%= review.user.email %></td>
         <td><%= review.created_at %></td>
+
+        <td>
+         <% if current_user && current_user == review.user %>
+            <%= link_to("Edit", edit_movie_review_path(review.movie, review), class: "btn btn-sm btn-default")%>
+            <%= link_to("Delete", movie_review_path(review.movie, review),    class: "btn btn-sm btn-default",
+                        method: :delete, data: { confirm: "Are You Sure?" } )%>
+         <% end %>
+        </td>
       </tr>
      <% end %>
     </tbody>
